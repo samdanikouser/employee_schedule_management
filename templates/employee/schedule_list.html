@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Employee Schedule List</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+          rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+          crossorigin="anonymous">
+</head>
+<body>
+{% include 'employee/index.html' %}
+{% if user.is_authenticated %}
+<h1 class="text-center my-3">Employees Schedule List</h1>
+<div class="container">
+    <a href="/employee/employee_schedule" class="btn btn-primary btn-sm">ADD SCHEDULE</a>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-body">
+                    <table class="table table-light table-striped table-hover">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>NAME</th>
+                            <th>LOCATION</th>
+                            <th>DEPARTMENT</th>
+                            <th>FROM DATE</th>
+                            <th>TO DATE</th>
+                            <th>ACTION</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for sched in schedule %}
+                        <tr>
+                            <td>{{sched.employee.employee_id}}</td>
+                            <td>{{sched.employee.full_name}}</td>
+                            <td>{{sched.location.location}}</td>
+                            <td>{{sched.employee.department.department}}</td>
+                            <td>{{sched.from_date}}</td>
+                            <td>{{sched.to_Date}}</td>
+                            <td>
+                                <a href="/employee/delete_schedule/{{sched.id}}"
+                                   class="btn btn-danger btn-sm">Delete</a>
+                                <a href="/employee/update_schedule/{{sched.id}}"
+                                   class="btn btn-success btn-sm">Update</a>
+                            </td>
+                        </tr>
+                        {%endfor%}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endif %}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+        crossorigin="anonymous"></script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Report</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+          rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+          crossorigin="anonymous">
+</head>
+<body>
+{% include 'employee/index.html' %}
+{% if user.is_authenticated %}
+<h1 class="text-center my-3">Report</h1>
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                {% if not show_table %}
+                <div class="card-body">
+                    <form action="/employee/report/" method="POST">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="from_date">From Date</label>
+                            <input id="from_date" name="from_date" type="date" class="form-control">
+                        </div>
+                        <div class="mb-3">
+                            <label for="to_date">To Date</label>
+                            <input id="to_date" name="to_date" type="date" class="form-control">
+                        </div>
+                        <div class="container text-center">
+                            <button class="btn" style="background-color: #39B5E0;">
+                                Show Data
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                {% endif %}
+                {% if show_table %}
+                <div class="card-body">
+                    <form action="/employee/generate_report/" method="POST">
+                        {% csrf_token %}
+                        <input hidden type=date name="from_date" value="{{from_date}}"/>
+                        <input hidden type=date name="to_date" value="{{to_date}}"/>
+                        <table class="table table-light table-striped table-hover">
+                            <thead>
+                            <tr>
+                                <th>EMP ID</th>
+                                <th>NAME</th>
+                                <th>DEPARTMENT</th>
+                                <th>LOCATION</th>
+                                <th>FROM DATE</th>
+                                <th>TO DATE</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for e in scheduler %}
+                            <tr>
+                                <td>{{e.employee.employee_id}}</td>
+                                <td>{{e.employee.full_name}}</td>
+                                <td>{{e.employee.department.department}}</td>
+                                <td>{{e.location.location}}</td>
+                                <td>{{e.from_date}}</td>
+                                <td>{{e.to_Date}}</td>
+                            </tr>
+                            {%endfor%}
+                            </tbody>
+                        </table>
+
+                        <div class="container text-center">
+                            <button class="btn" formaction="/employee/generate_report/" name="email_popup"
+                                    style="background-color: #39B5E0;">
+                                Add Email
+                            </button>
+                            <button class="btn" formaction="/employee/generate_report/" name="report_generate"
+                                    style="background-color: #39B5E0;">
+                                Generate Report
+                            </button>
+                        </div>
+                    </form>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endif %}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+        crossorigin="anonymous"></script>
+</body>
+</html>

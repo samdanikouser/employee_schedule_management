@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Update Employee Schedule Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"
+          rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi"
+          crossorigin="anonymous">
+</head>
+<body>
+{% include 'employee/index.html' %}
+{% if user.is_authenticated %}
+
+<h1 class="text-center my-3">Update schedule</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card bg-light text-black">
+                <div class="card-body">
+                    <form action="/employee/update_schedule/{{scheduler.id}}" method="POST">
+                        {% csrf_token %}
+
+                        <!--Employee Name-->
+                        <div class="mb-3">
+                            <label for="name">Employee name</label>
+                            <input
+                                    id="name"
+                                    type="text"
+                                    class="form-control" readonly="True"
+                                    value="{{scheduler.employee.full_name}}"
+                            />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="name">Department</label>
+                            <input
+                                    id="department"
+                                    type="text"
+                                    class="form-control" readonly="True"
+                                    value="{{scheduler.employee.department.department}}"
+                            />
+                        </div>
+
+                        <div class="mb-3 ">
+                            <label for="location">Location</label>
+                            <select name="location" id="location" class="form-control">
+                                <option value="{{scheduler.location.location}}">{{scheduler.location.location}}</option>
+                                {% for data in location %}
+                                <option value="{{data.location}}">{{data.location}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="from_date">From Date</label>
+                            <input
+                                    id="from_date"
+                                    type="date"
+                                    class="form-control"
+                                    name="from_date"
+                                    value="{{ scheduler.from_date|date:'Y-m-d'}}"
+                            />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="to_date">To Date</label>
+                            <input
+                                    id="to_date"
+                                    type="date"
+                                    class="form-control"
+                                    name="to_date"
+                                    value="{{ scheduler.to_Date|date:'Y-m-d'}}"
+                            />
+                        </div>
+
+                        <div class="container text-center">
+                            <button class="btn btn-success">
+                                Update Employee
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3"
+        crossorigin="anonymous"></script>
+</body>
+</html>
